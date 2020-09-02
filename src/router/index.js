@@ -1,20 +1,38 @@
-import modules from './modules';
-import Vue from 'vue';
-import Router from 'uni-simple-router';
+const routerPages = require('./routerPages');
+const subPackages = require('./routerSubPackages');
+let routerSubPackages = [];
+for (let item of subPackages) {
+    let { root = '', pages } = item;
 
-Vue.use(Router);
+    pages = pages.map((item) => {
+        let { path } = item;
 
-//初始化
-const router = new Router({
-    routes: [...modules] //路由表
+        item.path = root + '/' + item.path;
+        return item;
+    });
+    routerSubPackages = [].concat(routerSubPackages, pages);
+}
+const modules = [
+    ...routerPages,
+    ...routerSubPackages,
+];
+const routes = modules.map((item, index) => {
+    let { path = '', style = {} } = item;
+    let { navigationBarTitleText: title = '' } = style;
+    path = '/' + path;
+    let arr = path.split('/');
+    let name = arr[arr.length - 1].toUpperCase();
+    let res = {
+        path,
+        name,
+        meta: {
+            title,
+        },
+    };
+
+    if (index == 0) res.aliasPath = '/'; //对于h5端你必须在首页加上aliasPath并设置为/
+    return res;
 });
 
-//全局路由前置守卫
-router.beforeEach((to, from, next) => {
-    next();
-});
-
-// 全局路由后置守卫
-router.afterEach((to, from) => {});
-
-export default router;
+console.log('全部路由', routerPages, subPackages, modules, routes);
+export default routes;

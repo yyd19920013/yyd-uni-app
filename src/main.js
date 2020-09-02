@@ -1,13 +1,28 @@
 import Vue from 'vue';
 import App from './App';
-import router from './router';
-import { RouterMount } from 'uni-simple-router';
+import Router, { RouterMount } from 'uni-simple-router';
+import routes from './router';
 import store from './store';
 import * as filter from './filter';
-
-Vue.config.productionTip = false;
+import uView from './uview-ui';
 
 App.mpType = 'app';
+Vue.config.productionTip = false;
+Vue.use(Router);
+Vue.use(uView);
+
+//初始化
+const router = new Router({
+    routes, //路由表
+});
+
+//全局路由前置守卫
+router.beforeEach((to, from, next) => {
+    next();
+});
+
+// 全局路由后置守卫
+router.afterEach((to, from) => {});
 
 //挂载过滤器
 for (let attr in filter) {
@@ -27,3 +42,9 @@ RouterMount(app, '#app');
 // #ifndef H5
 app.$mount(); //为了兼容小程序及app端必须这样写才有效果
 // #endif
+
+export default app;
+export {
+    app,
+    router,
+};

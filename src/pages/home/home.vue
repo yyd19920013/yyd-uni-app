@@ -8,6 +8,9 @@
 		</view>
 		{{'2020/9/2'|date('yyyy-MM-dd hh:ss')}}
 		{{1.55555555555|toFixed(3)}}
+		<u-select v-model="show" :list="list"></u-select>
+		<u-button @click="show = true">打开</u-button>
+		<u-button @click="toTest">去测试页面</u-button>
 	</view>
 </template>
 <script>
@@ -17,6 +20,16 @@ export default {
 	data() {
 		return {
 			text: '11111',
+			show: false,
+			list: [{
+					value: '1',
+					label: '江'
+				},
+				{
+					value: '2',
+					label: '湖'
+				}
+			],
 		}
 	},
 
@@ -27,7 +40,9 @@ export default {
 	},
 
 	methods: {
-
+		toTest() {
+			this.$Router.push('/pages/test/test');
+		},
 	},
 }
 </script>

@@ -31,6 +31,8 @@ module.exports = {
                 "src": resolve('src'),
                 "components": resolve('src/components'),
                 "pages": resolve('src/pages'),
+                'package': resolve('src/package'),
+                "router": resolve('src/router'),
                 "store": resolve('src/store'),
                 "services": resolve('src/services'),
                 "static": resolve('src/static'),
