@@ -21,17 +21,17 @@ $uni-color-warning: #f0ad4e;
 $uni-color-error: #dd524d;
 
 /* 文字基本颜色 */
-$uni-text-color:#333;//基本色
-$uni-text-color-inverse:#fff;//反色
-$uni-text-color-grey:#999;//辅助灰色，如加载更多的提示信息
+$uni-text-color:#333; //基本色
+$uni-text-color-inverse:#fff; //反色
+$uni-text-color-grey:#999; //辅助灰色，如加载更多的提示信息
 $uni-text-color-placeholder: #808080;
 $uni-text-color-disable:#c0c0c0;
 
 /* 背景颜色 */
 $uni-bg-color:#ffffff;
 $uni-bg-color-grey:#f8f8f8;
-$uni-bg-color-hover:#f1f1f1;//点击状态颜色
-$uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
+$uni-bg-color-hover:#f1f1f1; //点击状态颜色
+$uni-bg-color-mask:rgba(0, 0, 0, 0.4); //遮罩颜色
 
 /* 边框颜色 */
 $uni-border-color:#c8c7cc;
@@ -74,3 +74,378 @@ $uni-color-subtitle: #555555; // 二级标题颜色
 $uni-font-size-subtitle:36rpx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30rpx;
+
+/* 自定义 */
+@function unit($num) {
+    $scale: 1;
+
+    @return #{if($num == 1, 1, $num * $scale)}rpx;
+}
+
+$main: #33adff;
+$green: #19B20A;
+$text : #333333;
+$grayText: #666;
+$lightGrayText:#999;
+$bg: #F2F2F2;
+$alert: #e84c3d;
+$orange: #ff7043;
+$orangeBg: #ffe4dd;
+$yellow: #fbc12d;
+$blueBg: #e5f5ff;
+$msgBlueBg: #66c2ff;
+$gray: #ccc;
+$alertColor:#FF6633;
+$alertBgColor:#FFE4dd;
+$padding1: 30rpx;
+$padding2: 40rpx;
+$padding3: 60rpx;
+$padding4: 56rpx;
+$border1: 1px solid #e4e4e4;
+$border2: 1px solid #bbbcc6;
+$borderRadius1: 8rpx;
+$height1: 88rpx;
+$height2: 128rpx;
+$dividerColor:#e4e4e4;
+
+@mixin touchHighlightedStyle {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    opacity: 0.8;
+}
+
+@mixin styleInit() {
+    box-sizing: border-box;
+    font-size: 28rpx;
+    color: #333;
+    ::v-deep [class] {
+        box-sizing: border-box;
+        &.navigator-hover {
+            background-color: transparent;
+            opacity: 0.8;
+        }
+        &.tap:active, &button:active {
+            opacity: 0.8;
+        }
+        &.input-placeholder, &.textarea-placeholder {
+            color: #999;
+        }
+    }
+}
+
+@mixin overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+@mixin multiLine1 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+@mixin multiLine2 {
+    @include multiLine1;
+    -webkit-line-clamp: 2;
+}
+
+@mixin multiLine3 {
+    @include multiLine1;
+    -webkit-line-clamp: 3;
+}
+
+@mixin img() {
+    width: 100%;
+    height: 100rpx;
+    background: no-repeat left top;
+    background-size: 100%;
+}
+
+@mixin shadow1() {
+    box-shadow: 0 .1rem .2rem rgba(0, 0, 0, 0.2);
+}
+
+@mixin shadow2() {
+    box-shadow: .05rem .05rem .1rem rgba(0, 0, 0, 0.2);
+}
+
+@mixin shadow3() {
+    box-shadow: 0 .05rem .1rem rgba(0, 0, 0, 0.2);
+}
+
+@mixin doctorInfo($path) {
+    display: flex;
+    padding: $padding1;
+    background-color: $main;
+    .imgWrap {
+        width: 120rpx;
+        height: 120rpx;
+        border-radius: 50%;
+    }
+    .rightContent {
+        flex: 1;
+        padding: 0 $padding1;
+        background: url($path + 'images/icon/ic_file_white.png') no-repeat right center;
+        background-size: 12rpx;
+        h3, h4 {
+            padding: 10rpx 0;
+            line-height: 40rpx;
+            color: #fff;
+            .em {
+                padding-left: 20rpx;
+            }
+        }
+        h3 {
+            .span {
+                font-size: 32rpx;
+            }
+        }
+    }
+}
+
+@mixin labelList() {
+    overflow: hidden;
+    span {
+        float: left;
+        padding: 0 20rpx;
+        height: 60rpx;
+        line-height: 60rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        font-size: 24rpx;
+        border: $border1;
+        border-radius: 4rpx;
+        background-color: $bg;
+        color: #666;
+        &:active {
+            opacity: .8;
+        }
+        &.active {
+            border-color: transparent;
+            background-color: $main;
+            color: #fff;
+        }
+    }
+}
+
+@mixin buttonWrap() {
+    padding: 80rpx $padding1;
+    background-color: transparent;
+    button {
+        width: 100%;
+        height: $height1;
+        line-height: $height1;
+        font-size: 32rpx;
+        border-radius: 44rpx;
+        background-color: $main;
+        color: #fff;
+        &:active {
+            opacity: .8;
+        }
+        &.gray {
+            background-color: #ddd;
+        }
+        &:after {
+            display: none;
+        }
+    }
+}
+
+@mixin infoList($path) {
+    padding-left: 20rpx;
+    margin-bottom: 20rpx;
+    background-color: #fff;
+    li {
+        display: flex;
+        padding-right: $padding1;
+        min-height: $height1;
+        line-height: $height1;
+        border-bottom: $border1;
+        &:last-of-type {
+            border-bottom: none;
+        }
+        >span {
+            width: 180rpx;
+            color: #666;
+            position: relative;
+        }
+        .rightContent {
+            @include multiLine1;
+            flex: 1;
+            padding: 0 $padding1;
+            text-align: right;
+            background: no-repeat right center;
+            background-size: 12rpx;
+            .text {
+                span, h3, h4 {
+                    padding-left: 10rpx;
+                }
+            }
+            .hint {
+                color: #999;
+            }
+        }
+        &.required {
+            >span {
+                padding-left: 20rpx;
+                &:before {
+                    content: "*";
+                    font-size: 24rpx;
+                    color: #ff0000;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+            }
+        }
+        &.hasArrow {
+            .rightContent {
+                background-image: url($path + 'images/icon/ic_file_more.png');
+            }
+        }
+        &.multiLine2 {
+            .text {
+                h3, h4 {
+                    line-height: 44rpx;
+                    font-size: 24rpx;
+                }
+                h4 {
+                    @include multiLine1();
+                }
+            }
+        }
+    }
+}
+
+@mixin infoList1($path) {
+    padding-left: $padding1;
+    margin-bottom: 20rpx;
+    background-color: #fff;
+    li {
+        padding-right: $padding1;
+        height: $height1;
+        line-height: $height1;
+        border-bottom: $border1;
+        &:last-of-type {
+            border-bottom: none;
+        }
+        .wrap {
+            display: flex;
+            justify-content: space-between;
+            padding-right: 30rpx;
+            height: 100%;
+            background: url($path + 'images/icon/ic_file_more.png') no-repeat right center;
+            background-size: 12rpx;
+            span {
+                width: 180rpx;
+            }
+            .rightContent {
+                @include multiLine1;
+                flex: 1;
+                text-align: right;
+                .radioGroup {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    label {
+                        padding-left: 40rpx;
+                    }
+                }
+                input, .pickerWrap, .picker, .pickerText {
+                    width: 100%;
+                    height: $height1;
+                    line-height: $height1;
+                    text-align: right;
+                }
+                .hint {
+                    color: #999;
+                }
+            }
+        }
+        &.noArrow {
+            .wrap {
+                background-image: none;
+            }
+        }
+    }
+}
+
+@mixin hint() {
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 24rpx;
+    background-color: $orangeBg;
+    color: $orange;
+}
+
+@mixin footer() {
+    height: 120rpx;
+    .footerWrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 20rpx $padding1;
+        height: 120rpx;
+        background-color: #fff;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 1000;
+        .leftContent {
+            flex: 1;
+            line-height: 40rpx;
+            h3 {
+                font-size: 24rpx;
+                color: #999;
+            }
+            h4 {
+                font-size: 36rpx;
+                color: $orange;
+            }
+        }
+        .buttonWrap {
+            @include buttonWrap;
+            display: flex;
+            height: 70rpx;
+            padding: 0;
+            button {
+                width: 230rpx;
+                height: 100%;
+                line-height: 65rpx;
+                margin-left: 20rpx;
+                border: $border1;
+                background-color: #fff;
+                color: #333;
+                &.pay {
+                    border-color: transparent;
+                    background-color: $orange;
+                    color: #fff;
+                }
+                &.reorder {
+                    border-color: transparent;
+                    background-color: $main;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+@mixin starWrap($path) {
+    overflow: hidden;
+    i {
+        float: left;
+        width: 32rpx;
+        height: 32rpx;
+        margin: 0 5rpx;
+        background: url($path+'images/icon/ic_star_S_gray.png') no-repeat center center;
+        background-size: 100%;
+        &.active {
+            background-image: url($path+'images/icon/ic_star_S_red.png');
+        }
+    }
+}
