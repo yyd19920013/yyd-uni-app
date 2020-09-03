@@ -39,6 +39,8 @@ module.exports = {
                 "js": resolve('src/static/js'),
                 "css": resolve('src/static/css'),
                 "images": resolve('src/static/images'),
+                "audio": resolve('src/static/audio'),
+                "video": resolve('src/static/video'),
             },
         },
     },

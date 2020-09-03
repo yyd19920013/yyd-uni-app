@@ -36,12 +36,17 @@ export default {
 	onShow() {
 		console.log(this.$Router);
 		console.log(getApp());
-		lStore.set('aaa', '按时大大');
+		lStore.set('var', '测试');
 	},
 
 	methods: {
 		toTest() {
-			this.$Router.push('/pages/test/test');
+			this.$Router.push({
+				path: '/pages/test/test',
+				query: {
+					a: 1,
+				},
+			});
 		},
 	},
 }
@@ -54,5 +59,13 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	.ul {
+		.li {
+			border-bottom: 1px solid #ddd;
+			&:last-of-type {
+				border-bottom-color: transparent;
+			}
+		}
+	}
 }
 </style>

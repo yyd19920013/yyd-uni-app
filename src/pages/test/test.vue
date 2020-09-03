@@ -11,8 +11,8 @@ export default {
 		}
 	},
 
-	onLoad() {
-
+	onShow() {
+		console.log(this.$Route.query);
 	},
 
 	methods: {
