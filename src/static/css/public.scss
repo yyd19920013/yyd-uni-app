@@ -32,10 +32,12 @@ $height2: 128rpx;
 $dividerColor:#e4e4e4;
 
 @mixin styleInit() {
+    width: 100%;
     box-sizing: border-box;
     font-size: 28rpx;
     color: #333;
     ::v-deep [class] {
+        width: 100%;
         box-sizing: border-box;
         &.navigator-hover {
             background-color: transparent;
