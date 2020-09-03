@@ -1,19 +1,17 @@
-import { copyJson } from 'js/yydjs';
 const routerPages = require('./routerPages');
 const subPackages = require('./routerSubPackages');
-const copySubPackages = copyJson(subPackages);
 let routerSubPackages = [];
 
-for (let item of copySubPackages) {
+for (let item of subPackages) {
     let { root = '', pages } = item;
-
-    pages = pages.map((item) => {
+    let arr = pages.map((item) => {
         let { path } = item;
 
         item.path = root + '/' + item.path;
         return item;
     });
-    routerSubPackages = [].concat(routerSubPackages, pages);
+
+    routerSubPackages = [].concat(routerSubPackages, arr);
 }
 const modules = [
     ...routerPages,

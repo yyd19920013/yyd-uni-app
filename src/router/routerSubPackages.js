@@ -1,4 +1,5 @@
 const moduleRoutes = [{
+    name: 'TEST',
     root: 'pages/test',
     pages: [{
         path: 'test',

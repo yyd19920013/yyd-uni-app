@@ -662,7 +662,7 @@ function fileType(suffix) {
     return posIndex != -1 ? typeList[posIndex] : typeList[length];
 };
 
-//微信小程序-本地存储
+//uni小程序-本地存储
 var lStore = {
     set: function () {
         let result = uni.setStorageSync.apply(this, arguments);
@@ -691,7 +691,7 @@ var lStore = {
     },
 };
 
-//微信小程序-获取当前页面的信息
+//uni小程序-获取当前页面的信息
 function getCurrentPage() {
     var pages = getCurrentPages();
     var length = pages.length - 1;
@@ -699,12 +699,12 @@ function getCurrentPage() {
     return pages[length];
 };
 
-//微信小程序-动画
+//uni小程序-动画
 /*
     <div :animation="animationData" class="test">
         测试页面
     </div>
-    wxAnimation({
+    uniAnimation({
         parent:this,//父组件的this
         animationName:'animationData',//animation绑定data中的值的名字
         animationConfig:{//动画属性配置
@@ -713,7 +713,7 @@ function getCurrentPage() {
         },
     });
 */
-function wxAnimation(option) {
+function uniAnimation(option) {
     var option = option || {};
     var animation = uni.createAnimation({
         duration: option.duration || 300,
@@ -728,8 +728,8 @@ function wxAnimation(option) {
     option.parent[option.animationName] = animation.export();
 };
 
-//微信小程序-toast
-function wxToast(title, duration) {
+//uni小程序-toast
+function uniToast(title, duration) {
     setTimeout(function () {
         uni.showToast({
             title: title,
@@ -868,7 +868,7 @@ var regJson = {
 //endFn（全部验证通过后才走的回调函数）
 //errorFn（参数中返回错误条件的索引）
 //msec（提示框消失的时间，默认3秒）
-function wxToasts(arr, endFn, errorFn, msec) {
+function uniToasts(arr, endFn, errorFn, msec) {
     var onOff = true;
     var errorIndex = -1;
 
@@ -901,8 +901,8 @@ function wxToasts(arr, endFn, errorFn, msec) {
     onOff && endFn && endFn();
 };
 
-//微信小程序-分享
-function wxxcxShare(option) {
+//uni小程序-分享
+function unixcxShare(option) {
     var option = option || {};
 
     return {
@@ -922,9 +922,9 @@ function wxxcxShare(option) {
     };
 };
 
-//微信小程序-用高德地图获取地理位置
+//uni小程序-用高德地图获取地理位置
 /*
-    wxGetLocation({
+    uniGetLocation({
         success:function(res,detail){//成功回调
             console.log(res,detail);
         },
@@ -933,7 +933,7 @@ function wxxcxShare(option) {
         },
     });
 */
-function wxGetLocation(option) {
+function uniGetLocation(option) {
     var option = option || {};
     var myAmapFun = new amapFile.AMapWX({
         key: '836a3b19c3d3461705af9d8ea20efcc5', //高德小程序应用专用key
@@ -966,10 +966,10 @@ function wxGetLocation(option) {
     });
 };
 
-//微信小程序-订阅消息
+//uni小程序-订阅消息
 //tmplIds（需要订阅的消息模板的id的集合）
 //success（成功的回调函数）
-function wxSubscribe(tmplIds, success) {
+function uniSubscribe(tmplIds, success) {
     uni.requestSubscribeMessage({
         tmplIds: tmplIds,
         success: success,
@@ -977,20 +977,20 @@ function wxSubscribe(tmplIds, success) {
 };
 
 //长期订阅消息
-function wxSubscribe1(success) {
+function uniSubscribe1(success) {
     let tmplIds = ['vZDcBbQjb-YrxaPe29rU9877Rz7neIuUIG95PoZ2zro', '4r2UFnoD3ApWYFqolqTx5mylWSbigOu-xUrve8xhZfk', 'q5YBqBvFtrUrNtXQODJ1_ek2USB6fLrnvR-NMaJ3Dno'];
 
-    wxSubscribe(tmplIds, (res) => {
+    uniSubscribe(tmplIds, (res) => {
         console.log(res);
         success && success(res);
     });
 };
 
 //药品发货通知
-function wxSubscribe2(success) {
+function uniSubscribe2(success) {
     let tmplIds = ['SnMNUySb6QZIhuFIbfGXFa6zgKh2CAM_cChfZOT1YLs'];
 
-    wxSubscribe(tmplIds, (res) => {
+    uniSubscribe(tmplIds, (res) => {
         success && success(res);
     });
 };
@@ -1020,12 +1020,12 @@ export {
     getCurrentPage,
     boundaryString,
 
-    wxAnimation,
-    wxToast,
-    wxToasts,
-    wxxcxShare,
-    wxGetLocation,
-    wxSubscribe,
-    wxSubscribe1,
-    wxSubscribe2,
+    uniAnimation,
+    uniToast,
+    uniToasts,
+    unixcxShare,
+    uniGetLocation,
+    uniSubscribe,
+    uniSubscribe1,
+    uniSubscribe2,
 };

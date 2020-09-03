@@ -1,6 +1,6 @@
 import md5 from 'md5';
 import { lStore } from 'js/yydjs.js';
-import { getCurrentPage, wxToast } from 'js/yydjs';
+import { getCurrentPage, uniToast } from 'js/yydjs';
 import store from 'store';
 
 //获取配置
@@ -78,7 +78,7 @@ function wxRequest(option) {
                         option.success && option.success(data);
                         return resolve && resolve(data);
                     } else {
-                        if (!option.noHint) wxToast(data.msg);
+                        if (!option.noHint) uniToast(data.msg);
                         return reject && reject(data);
                     }
                 } else if (res.statusCode == '403') {
@@ -111,7 +111,7 @@ function wxRequest(option) {
                     option.error && option.error(res);
                     return reject && reject(res);
                 } else {
-                    wxToast('服务器开了个小差, 请稍后再试!');
+                    uniToast('服务器开了个小差, 请稍后再试!');
                     option.error && option.error(res);
                     return reject && reject(res);
                 }
@@ -169,7 +169,7 @@ function wxUpload(option) {
                     if (data.code == '200') {
                         resolve(data);
                     } else {
-                        wxToast(data.msg);
+                        uniToast(data.msg);
                         reject(data.msg);
                     }
                 } else if (res.statusCode == '403') {
@@ -202,7 +202,7 @@ function wxUpload(option) {
                     }, 500);
                     reject('请先登录');
                 } else {
-                    wxToast('服务器开了个小差, 请稍后再试!');
+                    uniToast('服务器开了个小差, 请稍后再试!');
                     reject('服务器开了个小差, 请稍后再试!');
                 }
             },

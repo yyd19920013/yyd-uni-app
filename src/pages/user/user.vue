@@ -1,6 +1,6 @@
 <template>
-	<view class="test">
-		这是测试页
+	<view class="user">
+		这是我的
 	</view>
 </template>
 <script>
@@ -21,7 +21,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.test {
+.user {
 	@include styleInit;
 }
 </style>
