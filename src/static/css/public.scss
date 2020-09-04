@@ -32,18 +32,19 @@ $height2: 128rpx;
 $dividerColor:#e4e4e4;
 
 @mixin styleInit() {
-    width: 100%;
     box-sizing: border-box;
     font-size: 28rpx;
     color: #333;
     ::v-deep [class] {
-        width: 100%;
         box-sizing: border-box;
         &.navigator-hover {
             background-color: transparent;
             opacity: 0.8;
         }
-        &.tap:active, &button:active {
+        &.tap:active {
+            opacity: 0.8;
+        }
+        &button:active {
             opacity: 0.8;
         }
         &.input-placeholder, &.textarea-placeholder {
