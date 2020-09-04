@@ -1,6 +1,6 @@
 <template>
-    <div class="name">
-    </div>
+    <view class="name">
+    </view>
 </template>
 <script>
 export default {
