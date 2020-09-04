@@ -1,21 +1,20 @@
 module.exports = (pagesJson, loader) => {
-    // 需要将loader传入作为初始化，v0.0.6之后只需要初始化一次
-    const copyJson = (json) => {
-        return json ? JSON.parse(JSON.stringify(json)) : json;
-    };
+    //需要将loader传入作为初始化，v0.0.6之后只需要初始化一次
+    //不支持条件编译，需要自己通过process.env.UNI_PLATFORM来判断，自定义环境的需要自己添加env变量来判断使用
+    //uni-pages-hot-modules引入模块必须输入全的文件名包括后缀，否则将不会进行热重载
     const hotRequire = require('uni-pages-hot-modules')(loader);
-    const pages = copyJson(hotRequire('./router/routerPages'));
-    const subPackages = copyJson(hotRequire('./router/routerSubPackages'));
+    const pages = hotRequire('./router/routerPages.js');
+    const subPackages = hotRequire('./router/routerSubPackages.js');
 
     return {
         "easycom": {
             "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
         },
         "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-            ...pages
+            ...pages,
         ],
         "subPackages": [
-            ...subPackages
+            ...subPackages,
         ],
         "globalStyle": {
             "navigationBarTextStyle": "black",

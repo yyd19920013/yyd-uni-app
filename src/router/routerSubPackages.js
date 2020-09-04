@@ -1,4 +1,4 @@
-const moduleRoutes = [{
+module.exports = [{
     name: 'TEST',
     root: 'pages/test',
     pages: [{
@@ -8,5 +8,3 @@ const moduleRoutes = [{
         },
     }],
 }];
-
-module.exports = moduleRoutes;

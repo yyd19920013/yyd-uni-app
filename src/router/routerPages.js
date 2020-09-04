@@ -1,4 +1,4 @@
-const moduleRoutes = [{
+module.exports = [{
         path: 'pages/home/home',
         style: {
             navigationBarTitleText: '首页',
@@ -11,5 +11,3 @@ const moduleRoutes = [{
         },
     },
 ];
-
-module.exports = moduleRoutes;
