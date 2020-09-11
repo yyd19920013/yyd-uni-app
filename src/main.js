@@ -5,11 +5,13 @@ import routes from './router';
 import store from './store';
 import * as filter from './filter';
 import uView from './uview-ui';
+import mixinPlugin from 'plugins/mixinPlugin';
 
 App.mpType = 'app';
 Vue.config.productionTip = false;
 Vue.use(Router);
 Vue.use(uView);
+Vue.use(mixinPlugin);
 
 //初始化
 const router = new Router({

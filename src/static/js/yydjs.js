@@ -1,5 +1,4 @@
 import amapFile from 'js/AMapWX_SDK_V1.2.1/amap-wx';
-import { IHURL } from 'services';
 
 //判断数据类型的方法（对typeof的增强，7种常用类型的判断，返回小写字符串）
 function Type(obj) {
@@ -626,7 +625,11 @@ function resetData(data) {
 
 //重置vue中的data数据
 function resetVueData(vue) {
-    Object.assign(vue.$data, vue.$options.data());
+    if (vue.$initData$) {
+        Object.assign(vue, JSON.parse(vue.$initData$));
+    } else {
+        vue.$initData$ = JSON.stringify(vue.$data);
+    }
 }
 
 //json转换成字符串
@@ -877,20 +880,20 @@ function uniToasts(arr, endFn, errorFn, msec) {
 
         if (arr[i].reg) {
             if (condition && !arr[i].reg.test(arr[i].value)) {
-                wxToast(arr[i].hint, msec);
+                uniToast(arr[i].hint, msec);
                 onOff = false;
                 errorIndex = i;
                 break;
             }
         } else if (arr[i].type) {
             if (condition && regJson[arr[i].type] && !regJson[arr[i].type].reg.test(arr[i].value)) {
-                wxToast(arr[i].hint || '请输入有效的' + regJson[arr[i].type].name, msec);
+                uniToast(arr[i].hint || '请输入有效的' + regJson[arr[i].type].name, msec);
                 onOff = false;
                 errorIndex = i;
                 break;
             }
         } else if (arr[i].if) {
-            wxToast(arr[i].hint, msec);
+            uniToast(arr[i].hint, msec);
             onOff = false;
             errorIndex = i;
             break;
@@ -908,7 +911,7 @@ function unixcxShare(option) {
     return {
         title: option.title || '亿家健康预约挂号',
         desc: option.desc || '亿家健康预约挂号',
-        imageUrl: option.imageUrl || require('@/static/images/loading.gif'),
+        // imageUrl: option.imageUrl || require('@/static/images/loading.gif'),
         path: option.path ? (typeof option.path == 'boolean' ? getCurrentPage().route : option.path) : '/pages/hospital/main',
         success: function (res) {
             option.success && option.success(res);
@@ -995,6 +998,19 @@ function uniSubscribe2(success) {
     });
 };
 
+//清除h5记住的密码
+function clearRememberedPassword() {
+    //#ifdef H5
+    let oInput = document.querySelectorAll('input');
+
+    if (oInput) {
+        for (let i = 0; i < oInput.length; i++) {
+            oInput[i].setAttribute('autocomplete', 'new-password');
+        }
+    }
+    //#endif
+}
+
 //项目中用到的工具函数
 export {
     Type,
@@ -1028,4 +1044,6 @@ export {
     uniSubscribe,
     uniSubscribe1,
     uniSubscribe2,
+
+    clearRememberedPassword,
 };
