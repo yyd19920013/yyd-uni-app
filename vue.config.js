@@ -35,6 +35,7 @@ module.exports = {
                 "router": resolve('src/router'),
                 "store": resolve('src/store'),
                 "services": resolve('src/services'),
+                "plugins": resolve('src/plugins'),
                 "static": resolve('src/static'),
                 "js": resolve('src/static/js'),
                 "css": resolve('src/static/css'),
