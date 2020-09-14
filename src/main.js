@@ -14,17 +14,17 @@ Vue.use(uView);
 Vue.use(mixinPlugin);
 
 //初始化
-const router = new Router({
+const $Router = new Router({
     routes, //路由表
 });
 
 //全局路由前置守卫
-router.beforeEach((to, from, next) => {
+$Router.beforeEach((to, from, next) => {
     next();
 });
 
 // 全局路由后置守卫
-router.afterEach((to, from) => {});
+$Router.afterEach((to, from) => {});
 
 //挂载过滤器
 for (let attr in filter) {
@@ -48,5 +48,5 @@ app.$mount(); //为了兼容小程序及app端必须这样写才有效果
 export default app;
 export {
     app,
-    router,
+    $Router,
 };
