@@ -41,6 +41,7 @@ $dividerColor:#e4e4e4;
     }
     ::v-deep [class] {
         box-sizing: border-box;
+        font-size: 28rpx;
         &.navigator-hover {
             background-color: transparent;
             opacity: 0.8;
