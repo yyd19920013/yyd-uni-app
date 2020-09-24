@@ -19,17 +19,17 @@ function Type(obj) {
         }
     }
     return (typeof obj).toLowerCase();
-};
+}
 
 //json克隆副本
 function copyJson(json) {
     return json ? JSON.parse(JSON.stringify(json)) : json;
-};
+}
 
 //时间变成两位数
 function toTwo(n) {
     return +n < 10 ? '0' + n : n + '';
-};
+}
 
 //补零函数
 //value（需要补零的值）
@@ -45,7 +45,7 @@ function zeroFill(value, length, isBehind) {
     }
 
     return !isBehind ? zeroStr + value : value + zeroStr;
-};
+}
 
 //算出本月天数
 //getMonth获得的月份是从0开始，要加1
@@ -54,7 +54,7 @@ function manyDay(year, month) {
     var nextMonth = new Date(year, month, 0);
 
     return nextMonth.getDate();
-};
+}
 
 //正常化日期
 function normalDate(oDate) {
@@ -68,7 +68,7 @@ function normalDate(oDate) {
 
     oDate = new Date(oDate);
     return oDate;
-};
+}
 
 //获取星期
 function getWeekName(oDate, str) {
@@ -78,7 +78,7 @@ function getWeekName(oDate, str) {
     var arr = ['日', '一', '二', '三', '四', '五', '六'];
 
     return str + arr[iWeek];
-};
+}
 
 //根据出生日期获取年龄
 function getAge(date, real) {
@@ -97,7 +97,7 @@ function getAge(date, real) {
     var age = diff > 0 ? (real ? diff : Math.floor(diff)) : 0;
 
     return age;
-};
+}
 
 //根据身份证号码获取性别和生日
 function getSexAndDob(identity) {
@@ -118,7 +118,7 @@ function getSexAndDob(identity) {
     }
 
     return sexAndDob;
-};
+}
 
 //身份证号码校验、获取身份证信息以及计算最后一位校验码、转换15位身份证为18位
 /*
@@ -316,7 +316,7 @@ function secondFormat0(seconds, fmt, adjustFmt) {
     }
 
     return fmt;
-};
+}
 
 //日期格式化函数
 //oDate（时间戳或字符串日期都支持）
@@ -353,7 +353,7 @@ function dateFormat0(oDate, fmt) {
     }
 
     return fmt;
-};
+}
 
 //时间格式化(主要用于格式化历史时间到当前时间是多少秒到多少年前)
 //oDate（时间戳或字符串日期都支持）
@@ -385,7 +385,7 @@ function dateFormat1(oDate) {
         lookTime = years + '年前';
     }
     return lookTime;
-};
+}
 
 //金额格式化
 function amountFormat0(value, dLength, cLength) {
@@ -419,7 +419,7 @@ function amountFormat0(value, dLength, cLength) {
 
     if (arr && arr.length) arr = arr.replace('-,', '-');
     return arr;
-};
+}
 
 //数字四舍五入为指定位数的数字
 function toFixed0(value, length, closeRound) {
@@ -462,7 +462,7 @@ function toFixed0(value, length, closeRound) {
     }
 
     return arr;
-};
+}
 
 //格式化手机号为344
 function formatMobile(val) {
@@ -477,49 +477,54 @@ function formatMobile(val) {
     }
 
     return val;
-};
+}
 
 //科学运算（解决js处理浮点不正确的问题）
 //num1（要进行运算的第一个数字）
-//operator（运算符号,+,-,*,/）
+//operator（运算符号,+、-、*、/）
 //num2（要进行运算的第二个数字）
+/*
+    测试例子：
+    console.log(19044.009 + 0.01, computed(19044.009, '+', 0.01));
+    console.log(19044.002 - 0.01, computed(19044.002, '-', 0.01));
+    console.log(19044.003 * 0.05, computed(19044.003, '*', 0.05));
+    console.log(19044.001 / 0.05, computed(19044.001, '/', 0.05));
+    console.log(11 + 22, computed(11, '+', 22));
+*/
 function computed(num1, operator, num2) {
-    var length1 = (num1 + '').split('.')[1];
-    length1 = length1 ? length1.length : 0;
-    var length2 = (num2 + '').split('.')[1];
-    length2 = length2 ? length2.length : 0;
-
+    var numArr1 = (num1 + '').split('.');
+    var numArr2 = (num2 + '').split('.');
+    var numArr11 = numArr1[1] || 0;
+    var numArr21 = numArr2[1] || 0;
+    var length1 = numArr11 ? numArr11.length : 0;
+    var length2 = numArr21 ? numArr21.length : 0;
     var integer1 = Math.pow(10, length1);
     var integer2 = Math.pow(10, length2);
     var iMax = Math.max(integer1, integer2);
+    var diffInteger1 = iMax / integer1;
+    var diffInteger2 = iMax / integer2;
+    var decimals1 = +numArr11 * diffInteger1;
+    var decimals2 = +numArr21 * diffInteger2;
     var result = '';
 
+    num1 = numArr1[0] * iMax + decimals1;
+    num2 = numArr2[0] * iMax + decimals2;
     switch (operator) {
         case '+':
-            num1 = num1 * iMax;
-            num2 = num2 * iMax;
             result = (num1 + num2) / iMax;
             break;
         case '-':
-            num1 = num1 * iMax;
-            num2 = num2 * iMax;
             result = (num1 - num2) / iMax;
             break;
         case '*':
-            num1 = num1 * integer1;
-            num2 = num2 * integer2;
-            result = (num1 * num2) / integer1;
-            result = result / integer2;
+            result = (num1 * num2) / (iMax * iMax);
             break;
         case '/':
-            num1 = num1 * integer1;
-            num2 = num2 * integer2;
-            result = (num1 / num2) / integer1;
-            result = result / integer2;
+            result = num1 / num2;
             break;
     }
     return result;
-};
+}
 
 //生成32位唯一字符串(大小写字母数字组合)
 function soleString32() {
@@ -538,7 +543,7 @@ function soleString32() {
     });
     resultStr = resultStr.join('');
     return resultStr;
-};
+}
 
 //生成添加boundary的字符串，用于小程序uni.request发送multipart/form-data请求的方法
 function boundaryString(json) {
@@ -557,7 +562,7 @@ function boundaryString(json) {
     data += '--' + id + '--';
     result.data = data;
     return result;
-};
+}
 
 //自定义事件的实现
 var customEvent = {
@@ -621,7 +626,7 @@ function resetData(data) {
             }
         },
     };
-};
+}
 
 //重置vue中的data数据
 function resetVueData(vue) {
@@ -642,7 +647,7 @@ function jsonToStr(json) {
     str = str.substring(0, str.length - 1);
 
     return str;
-};
+}
 
 //根据后缀名判断文件类型
 function fileType(suffix) {
@@ -663,7 +668,7 @@ function fileType(suffix) {
     var posIndex = resultList.indexOf(true);
 
     return posIndex != -1 ? typeList[posIndex] : typeList[length];
-};
+}
 
 //uni小程序-本地存储
 var lStore = {
@@ -700,7 +705,7 @@ function getCurrentPage() {
     var length = pages.length - 1;
 
     return pages[length];
-};
+}
 
 //uni小程序-动画
 /*
@@ -729,7 +734,7 @@ function uniAnimation(option) {
     animation.step();
 
     option.parent[option.animationName] = animation.export();
-};
+}
 
 //uni小程序-toast
 function uniToast(title, duration) {
@@ -741,7 +746,7 @@ function uniToast(title, duration) {
             duration: duration || 2000,
         });
     });
-};
+}
 
 //判断json是否有某个key，不管是否为空
 function jsonHasKey(json, key) {
@@ -749,7 +754,7 @@ function jsonHasKey(json, key) {
         return false;
     }
     return key in json;
-};
+}
 
 //所有积累正则
 //reg（验证正则）
@@ -902,7 +907,7 @@ function uniToasts(arr, endFn, errorFn, msec) {
 
     errorFn && errorFn(errorIndex);
     onOff && endFn && endFn();
-};
+}
 
 //uni小程序-分享
 function unixcxShare(option) {
@@ -923,7 +928,7 @@ function unixcxShare(option) {
             option.complete && option.complete(res);
         },
     };
-};
+}
 
 //uni小程序-用高德地图获取地理位置
 /*
@@ -967,7 +972,7 @@ function uniGetLocation(option) {
             option.fail && option.fail(error);
         },
     });
-};
+}
 
 //uni小程序-订阅消息
 //tmplIds（需要订阅的消息模板的id的集合）
@@ -977,7 +982,7 @@ function uniSubscribe(tmplIds, success) {
         tmplIds: tmplIds,
         success: success,
     });
-};
+}
 
 //长期订阅消息
 function uniSubscribe1(success) {
@@ -987,7 +992,7 @@ function uniSubscribe1(success) {
         console.log(res);
         success && success(res);
     });
-};
+}
 
 //药品发货通知
 function uniSubscribe2(success) {
@@ -996,7 +1001,7 @@ function uniSubscribe2(success) {
     uniSubscribe(tmplIds, (res) => {
         success && success(res);
     });
-};
+}
 
 //清除h5记住的密码
 function clearRememberedPassword() {
@@ -1026,6 +1031,7 @@ export {
     dateFormat1,
     amountFormat0,
     toFixed0,
+    computed,
     soleString32,
     customEvent,
     resetData,
