@@ -11,6 +11,7 @@
 		<u-button @click="toTest">去测试页面</u-button>
 		<text>{{'2020/9/2'|date('yyyy-MM-dd hh:ss')}}</text>
 		<text>{{1.55555555555|toFixed(3)}}</text>
+		<image :src="require('image/width.png')" mode="widthFix"></image>
 		<u-button @click="count++">{{count}}增加</u-button>
 	</view>
 </template>
