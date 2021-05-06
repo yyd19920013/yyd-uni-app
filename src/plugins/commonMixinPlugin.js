@@ -16,7 +16,7 @@ export default {
             onShow() {
                 try{
                     let needResetList = ['/pages/test/test'];
-                    let { path } = this.$Router.$Route;
+                    let { path } = this.$Route;
 
                     if (needResetList.includes(path)) {
                         resetVueData(this);
