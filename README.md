@@ -1,6 +1,6 @@
 # yyd-uni-app
 
-- 注意事项：请使用npm进行依赖的安装
+- 注意事项：请使用npm进行依赖的安装，否则可能会出现依赖报错的问题
 - 本项目使用uni-simple-router管理路由
     - 文档网站：https://hhyang.cn/v2/
     - 简单使用：
