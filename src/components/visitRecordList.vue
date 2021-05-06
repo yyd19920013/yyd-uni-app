@@ -19,7 +19,7 @@
 import vm from 'src/main';
 import imgWrap from 'components/imgWrap';
 import loadMore from 'components/loadMore';
-import { resetData } from 'js/yydjs';
+import { resetData } from 'js/utils';
 import { findDiseases } from 'services';
 
 const resetDataFn = resetData({ //需要重置的data属性
@@ -137,7 +137,6 @@ export default {
         loadMore,
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -166,5 +165,4 @@ export default {
         }
     }
 }
-
 </style>

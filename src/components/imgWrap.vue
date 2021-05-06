@@ -2,7 +2,7 @@
     <image :class="resultClass" :src="resultSrc" :mode="resultMode" :webp="webp" :lazy-load='lazyLoad' :show-menu-by-longpress="showMenuByLongpress" @error="error" @load="loadFn"></image>
 </template>
 <script>
-import { resetData, Type } from 'js/yydjs';
+import { resetData, Type } from 'js/utils';
 
 const resetDataFn = resetData({ //需要重置的data属性
 
@@ -144,7 +144,6 @@ export default {
         },
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -160,5 +159,4 @@ export default {
         }
     }
 }
-
 </style>

@@ -1,50 +1,53 @@
 import md5 from 'md5';
-import { lStore } from 'js/yydjs.js';
-import { getCurrentPage, uniToast } from 'js/yydjs';
-import store from 'store';
+import { lStore } from 'js/utils';
+import CONFIG_JSON from 'services/config';
 
-//获取配置
-const getConfig = () => {
-    const config = {
-        dev: {
-            ihUrl: 'https://hcnfoshan.bsoft.com.cn',
-            wxUrl: 'https://hcnweixin.bsoft.com.cn',
-            imgUrl: 'http://hcnfile.bsoft.com.cn/file/upload/image/',
-            profile: 'foshandev'
-        },
-        release: {
-            ihUrl: 'https://foshan.bshcn.com.cn',
-            wxUrl: 'https://wx.bshcn.com.cn',
-            imgUrl: 'http://image.bshcn.com.cn/file/upload/image/',
-            profile: 'foshanPro'
-        }
-    }
-    const CONFIG_ENV = process.env.CONFIG_ENV;
-    var env = config[CONFIG_ENV];
+const { ENV } = CONFIG_JSON;
+const COMMON = CONFIG_JSON[ENV || 'develop'];
+// #ifdef H5
+const URL = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? '/api' : COMMON.baseUrl; //本地环境用反向代理，线上环境用baseUrl，线上域名和请求地址一致用'/'
+// #endif
 
-    return env || config.dev;
-}
-const config = getConfig();
-const IHURL = config.ihUrl; //佛山域名
-const WexinURL = config.wxUrl; //微信域名
-const { imgUrl, profile } = config;
-const viewImage = imgUrl; //图片地址
-const ImageURL = imgUrl; //图片地址
-const APPID = 'wxc49f70991d742d55'; //小程序ID
-const ProductCode = 'hcn.fs-nhqrmyy.patient_mini'; //产品编码
-const TenantId = 'hcn.fs-nhqrmyy'; //租户
-const RoleId = 'patient'; //角色id
-const BMapAppKey = 'eGNntZFy4Carv33KUMWvjwnOgp5lxjYp'; //百度地图小程序appkey
-const getAccessToken = () => {
-    let userInfo = lStore.get('userInfo') || {};
-    let { accessToken = '' } = userInfo;
+// #ifdef MP-WEIXIN
+const URL = COMMON.baseUrl; //小程序直接用baseUrl
+// #endif
+const context = require.context('./modules', true, /\.js$/);
+let modules = {};
 
-    return accessToken; //登录token
-}
+context.keys().forEach((item) => {
+    modules = Object.assign({}, modules, context(item));
+});
 
-//微信小程序-网络请求
-function wxRequest(option) {
-    var option = option || {};
+let loadingTimer = null;
+let toastShow = false;
+const showToast = (config) => {
+    let { duration = 2000 } = config;
+
+    toastShow = true;
+    clearTimeout(loadingTimer);
+    loadingTimer = setTimeout(() => {
+        toastShow = false;
+        uni.hideLoading();
+    }, duration);
+    let resultConfig = Object.assign({}, {
+        mask: true,
+        icon: 'none',
+        duration,
+    }, config);
+
+    setTimeout(() => {
+        uni.showToast(resultConfig);
+    });
+};
+const uniToast = (title, duration) => {
+    showToast({
+        title: title,
+        duration: duration,
+    });
+};
+//uni小程序-网络请求
+function uniRequest(config) {
+    var config = config || {};
     var errorPromise = {
         then: function () {
             console.error('这是一个无效的then函数，如果要使用promise方式，不要在config对象里配置success、error、finally函数');
@@ -60,38 +63,33 @@ function wxRequest(option) {
         },
     };
 
-    function wxRequestFn(resolve, reject) {
+    function uniRequestFn(resolve, reject) {
         wx.request({
-            url: option.url,
-            data: option.data || {},
-            header: option.header || {},
-            method: option.method && option.method.toUpperCase() || 'GET',
+            url: config.url,
+            data: config.params || {},
+            header: config.header || {},
+            method: config.method && config.method.toUpperCase() || 'GET',
             timeout: 20 * 1000,
-            dataType: option.dataType || 'json',
-            responseType: option.responseType || 'text',
+            dataType: config.dataType || 'json',
+            responseType: config.responseType || 'text',
             success: function (res) {
                 if (res.statusCode == '200') {
                     var data = res.data;
 
-                    option.finally && option.finally(data);
-                    if (data.code == '200') {
-                        option.success && option.success(data);
+                    config.finally && config.finally(data);
+                    if (data.code == config.code) {
+                        config.success && config.success(data);
                         return resolve && resolve(data);
                     } else {
-                        if (!option.noHint) uniToast(data.msg);
+                        if (!config.noHint) uniToast(data.msg);
                         return reject && reject(data);
                     }
                 } else if (res.statusCode == '403') {
-                    if (!option.noHint) {
-                        if (lStore.get('showLoginModel')) {
-                            return;
-                        }
-                        store.commit('userInfo/clearUserInfo');
+                    if (!config.noHint) {
+                        if (lStore.get('showLoginModel')) return;
                         lStore.set('showLoginModel', true);
                         setTimeout(() => {
                             lStore.set('showLoginModel', false);
-                            let currentPage = getCurrentPage();
-
                             wx.showModal({
                                 title: '提示', //提示的标题,
                                 content: '您的登录会话已失效，请重新登录', //提示的内容,
@@ -108,57 +106,63 @@ function wxRequest(option) {
                             });
                         }, 500);
                     }
-                    option.error && option.error(res);
+                    config.error && config.error(res);
                     return reject && reject(res);
                 } else {
                     uniToast('服务器开了个小差, 请稍后再试!');
-                    option.error && option.error(res);
+                    config.error && config.error(res);
                     return reject && reject(res);
                 }
             },
             fail: function (res) {
-                option.fail && option.fail(res);
+                config.fail && config.fail(res);
                 return reject && reject(res);
             },
             complete: function (res) {
-                wx.hideLoading();
-                option.complete && option.complete(res);
+                if (config.loadingShow && !toastShow) {
+                    uni.hideLoading();
+                }
+                config.complete && config.complete(res);
             },
         });
     };
 
-    wx.showLoading({
-        title: '请求中',
-        mask: true,
-    });
-    if (option.success || option.finally) {
-        wxRequestFn();
+    if (config.loadingShow) {
+        uni.showLoading({
+            title: '请求中',
+            mask: true,
+        });
+    }
+    if (config.success || config.finally) {
+        uniRequestFn();
         return errorPromise;
     } else {
         return new Promise(function (resolve, reject) {
-            wxRequestFn(resolve, reject);
+            uniRequestFn(resolve, reject);
         });
     }
 };
 
-//微信小程序-上传文件
-function wxUpload(option) {
-    var option = option || {};
+//uni小程序-上传文件
+function uniUpload(config) {
+    var config = config || {};
 
-    wx.showLoading({
-        title: '请求中',
-        mask: true,
-    });
-
+    if (config.loadingShow) {
+        uni.showLoading({
+            title: '请求中',
+            mask: true,
+        });
+    }
     return new Promise((resolve, reject) => {
-        var header = option.header || {};
-        header["Content-Type"] = "multipart/form-data";
+        var header = config.header || {};
+
+        header['Content-Type'] = 'multipart/form-data';
         wx.uploadFile({
-            url: option.url,
-            filePath: option.filePath || '',
-            name: option.name || '',
+            url: config.url,
+            filePath: config.filePath || '',
+            name: config.name || '',
             header: header,
-            formData: option.formData || {},
+            formData: config.formData || {},
             success: function (res) {
                 var data = {};
                 if (res.data) {
@@ -166,25 +170,17 @@ function wxUpload(option) {
                 }
 
                 if (res.statusCode == '200') {
-                    if (data.code == '200') {
-                        resolve(data);
+                    if (data.code == config.code) {
+                        return resolve && resolve(data);
                     } else {
-                        uniToast(data.msg);
-                        reject(data.msg);
+                        if (!config.noHint) uniToast(data.msg);
+                        return reject && reject(data);
                     }
                 } else if (res.statusCode == '403') {
-                    if (lStore.get('showLoginModel')) {
-                        return;
-                    }
-                    store.commit('userInfo/clearUserInfo');
+                    if (lStore.get('showLoginModel')) return;
                     lStore.set('showLoginModel', true);
                     setTimeout(() => {
                         lStore.set('showLoginModel', false);
-                        let currentPage = getCurrentPage();
-                        // if (currentPage.route == 'package/userInfo/login/login' ||
-                        //     currentPage.route == 'package/userInfo/login/register') {
-                        //     return;
-                        // }
                         wx.showModal({
                             title: '提示', //提示的标题,
                             content: '您的登录会话已失效，请重新登录', //提示的内容,
@@ -200,130 +196,74 @@ function wxUpload(option) {
                             }
                         });
                     }, 500);
-                    reject('请先登录');
+                    return reject && reject(res);
                 } else {
                     uniToast('服务器开了个小差, 请稍后再试!');
-                    reject('服务器开了个小差, 请稍后再试!');
+                    return reject && reject(res);
                 }
             },
             fail: function (res) {
                 reject('服务器开了个小差, 请稍后再试!');
             },
             complete: function (res) {
-                wx.hideLoading();
-                console.log('wx.uploadFile.complete', res);
+                if (config.loadingShow && !toastShow) {
+                    uni.hideLoading();
+                }
+                config.complete && config.complete(res);
             },
         });
     });
 };
-
-const IHRequest = (config) => {
-    let [id, method] = config.url.split('/').splice(1, 2);
-
-    config.url = IHURL + '/*.jsonRequest';
-    config.header = {
-        'X-Access-Token': getAccessToken(),
-        'X-Service-Id': id,
-        'X-Service-Method': method,
-        'B-Product-Code': ProductCode,
-        'T-Product-Code': ProductCode,
+const API = (config) => {
+    config.url = URL + config.url;
+    config.method = config.method ? config.method : 'post';
+    config.code = 0;
+    config.headers = {
+        'token': '',
+        'sign': '',
+        'timestamp': +new Date() / 1000,
     };
-    return wxRequest(config);
+    return uniRequest(config);
 };
-
-const IHRequest1 = (config) => {
-    config.url = IHURL + config.url;
-    config.header = {
-        'X-Access-Token': getAccessToken(),
-        'B-Product-Code': ProductCode,
-        'T-Product-Code': ProductCode,
-        'content-type': `multipart/form-data; boundary=${config.id}`,
-    };
-    return wxRequest(config);
-};
-
-const WexinRequest = (config) => {
-    let [id, method] = config.url.split('/').splice(1, 2);
-
-    config.url = WexinURL + '/*.jsonRequest';
-    config.header = {
-        'X-Access-Token': getAccessToken(),
-        'X-Service-Id': id,
-        'X-Service-Method': method,
-        'B-Product-Code': ProductCode,
-        'T-Product-Code': ProductCode,
-    };
-    return wxRequest(config);
-};
-
-// config:{
-//  requestPath,
-//  filePath,
-//  name
-//  formData
-// }
-const IHUpload = (config) => {
-    var option = {};
-    option.url = IHURL + config.requestPath;
-    option.filePath = config.filePath;
-    option.formData = config.formData;
-    option.name = config.name;
-    option.header = {
-        'X-Access-Token': getAccessToken(),
-        'B-Product-Code': ProductCode,
-        'T-Product-Code': ProductCode,
-    };
-    return wxUpload(option);
-};
-
-// config:{
-//  requestPath,
-//  filePath,
-//  name
-//  formData
-// }
-const WexinUpload = (config) => {
-    var option = {};
-    option.url = WexinURL + config.requestPath;
-    option.filePath = config.filePath;
-    option.formData = config.formData;
-    option.name = config.name;
-    option.header = {
-        'X-Access-Token': getAccessToken(),
-        'B-Product-Code': ProductCode,
-        'T-Product-Code': ProductCode,
-    };
-    return wxUpload(option);
-};
-
 /*
-    []
+    config: {
+        url,
+        filePath,
+        formData,
+        name,
+    }
 */
-const findDic = (data, success) => {
-    IHRequest({
-        url: '/cas_ih_foshan.wx_multipleDictionaryService/findDic',
-        method: 'post',
-        data,
+const UPLOAD = (config) => {
+    config.url = URL + config.url;
+    config.header = {
+        'X-Access-Token': '',
+        'B-Product-Code': '',
+        'T-Product-Code': '',
+    };
+    return uniUpload(config);
+};
+//axios请求示例
+const testAxios = (params, success) => {
+    return API({
+        url: '/myBackground/ports/article.php',
+        params,
         success,
     });
 };
 
+const CONFIG = Object.assign({}, COMMON, {
+    envName: ENV,
+    API, //api请求函数
+    UPLOAD, //上传请求函数
+    testAxios, //axios请求示例
+});
+const SERVICES = Object.assign({}, CONFIG, modules);
+
+console.log('当前环境：', ENV);
+console.log('当前环境配置：', CONFIG);
+console.log('SERVICES', SERVICES);
 export {
-    IHURL, //互联网医院域名
-    WexinURL, //微信域名
-    viewImage, //图片地址
-    profile,
-    ImageURL,
-    APPID, //小程序ID
-    ProductCode, //产品编码
-    TenantId, //租户
-    RoleId, //角色id
-    IHRequest, //佛山请求函数(method方式)
-    IHRequest1, //佛山请求函数(url方式)
-    WexinRequest, //微信请求函数(method方式)
-    IHUpload, //佛山图片上传
-    WexinUpload, //微信图片上传
-    findDic, //查字典
-    getAccessToken,
-    BMapAppKey
+    showToast,
+    uniToast,
 };
+export default SERVICES;

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { $Router } from 'src/main';
-import { resetVueData } from 'js/yydjs';
+import { resetVueData } from 'js/utils';
 
 export default {
     install() {

@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import { resetData } from 'js/yydjs';
+import { resetData } from 'js/utils';
 
 const resetDataFn = resetData({ //需要重置的data属性
 
@@ -132,7 +132,6 @@ export default {
         },
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -147,5 +146,4 @@ export default {
         background-size: cover;
     }
 }
-
 </style>

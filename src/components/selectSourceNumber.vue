@@ -1,9 +1,5 @@
 <template>
-    <div 
-        :class="{selectSourceNumber:true,active:show}" 
-        :id="id" 
-        @click="maskClose($event)"
-    >
+    <div :class="{selectSourceNumber:true,active:show}" :id="id" @click="maskClose($event)">
         <div class="wrap">
             <div class="title">
                 <span class="cancel tap" @click="close">取消</span>
@@ -30,7 +26,7 @@
     </div>
 </template>
 <script>
-import { resetData, copyJson, soleString32, getWeekName, dateFormat0 } from 'js/yydjs';
+import { resetData, copyJson, soleString32, getWeekName, dateFormat0 } from 'js/utils';
 import { findDocReservationsSchduleHyByItemCode } from 'services';
 
 const resetDataFn = resetData({ //需要重置的data属性
@@ -219,7 +215,6 @@ export default {
         },
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -323,5 +318,4 @@ export default {
         }
     }
 }
-
 </style>

@@ -43,7 +43,7 @@
     </div>
 </template>
 <script>
-import { resetData, Type, copyJson } from 'js/yydjs';
+import { resetData, Type, copyJson } from 'js/utils';
 
 const resetDataFn = resetData({ //需要重置的data属性
     firstLoaded: false,
@@ -594,7 +594,6 @@ export default {
         },
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -610,5 +609,4 @@ export default {
         }
     }
 }
-
 </style>

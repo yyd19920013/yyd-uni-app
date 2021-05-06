@@ -4,14 +4,15 @@ import Router, { RouterMount } from 'uni-simple-router';
 import routes from './router';
 import store from './store';
 import * as filter from './filter';
+import services from 'services';
 import uView from './uview-ui';
-import mixinPlugin from 'plugins/mixinPlugin';
+import commonMixinPlugin from 'plugins/commonMixinPlugin';
 
 App.mpType = 'app';
 Vue.config.productionTip = false;
 Vue.use(Router);
 Vue.use(uView);
-Vue.use(mixinPlugin);
+Vue.use(commonMixinPlugin);
 
 //初始化
 const $Router = new Router({
@@ -31,6 +32,9 @@ for (let attr in filter) {
     Vue.filter(attr, filter[attr]);
 }
 
+//挂载网络请求
+Vue.prototype.$services = services;
+
 const app = new Vue({
     ...App,
     store,
@@ -45,8 +49,8 @@ RouterMount(app, '#app');
 app.$mount(); //为了兼容小程序及app端必须这样写才有效果
 // #endif
 
-export default app;
 export {
     app,
     $Router,
 };
+export default app;

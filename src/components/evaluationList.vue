@@ -31,7 +31,7 @@
 import vm from 'src/main';
 import loadMore from 'components/loadMore';
 import listEmpty from 'components/listEmpty';
-import { resetData, dateFormat0 } from 'js/yydjs';
+import { resetData, dateFormat0 } from 'js/utils';
 import { getComments } from 'services';
 
 const resetDataFn = resetData({ //需要重置的data属性
@@ -169,7 +169,6 @@ export default {
         listEmpty,
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -211,5 +210,4 @@ export default {
         }
     }
 }
-
 </style>

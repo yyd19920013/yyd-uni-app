@@ -1,7 +1,13 @@
 const path = require("path");
 const resolve = (dir) => {
     return path.join(__dirname, dir);
-}
+};
+const CONFIG_JSON = require('./src/services/config.js');
+const { ENV } = CONFIG_JSON;
+const target = CONFIG_JSON[ENV || 'develop'].baseUrl;
+
+console.log(`当前运行环境：${ENV}`);
+console.log(`当前代理地址：${target}`);
 
 module.exports = {
     transpileDependencies: ['uni-simple-router'],
@@ -13,7 +19,7 @@ module.exports = {
         open: true,
         proxy: {
             '/api': { //这里最好有一个 /
-                target: 'http://yangyd.cn', // 服务器端接口地址
+                target, // 服务器端接口地址
                 //如果要代理 websockets，配置这个参数
                 ws: false,
                 // 如果是https接口，需要配置这个参数

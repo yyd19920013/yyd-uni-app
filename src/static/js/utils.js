@@ -1,4 +1,5 @@
 import amapFile from 'js/AMapWX_SDK_V1.2.1/amap-wx';
+import { showToast, uniToast } from 'src/main';
 
 //判断数据类型的方法（对typeof的增强，7种常用类型的判断，返回小写字符串）
 function Type(obj) {
@@ -736,18 +737,6 @@ function uniAnimation(option) {
     option.parent[option.animationName] = animation.export();
 }
 
-//uni小程序-toast
-function uniToast(title, duration) {
-    setTimeout(function () {
-        uni.showToast({
-            title: title,
-            mask: true,
-            icon: 'none',
-            duration: duration || 2000,
-        });
-    });
-}
-
 //判断json是否有某个key，不管是否为空
 function jsonHasKey(json, key) {
     if (Type(json) != 'object') {
@@ -1043,6 +1032,7 @@ export {
     boundaryString,
 
     uniAnimation,
+    showToast,
     uniToast,
     uniToasts,
     unixcxShare,

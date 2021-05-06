@@ -49,7 +49,7 @@ import vm from 'src/main';
 import imgWrap from 'components/imgWrap';
 import loadMore from 'components/loadMore';
 import listEmpty from 'components/listEmpty';
-import { resetData } from 'js/yydjs';
+import { resetData } from 'js/utils';
 import { viewImage, findDoctors } from 'services';
 
 const resetDataFn = resetData({ //需要重置的data属性
@@ -254,7 +254,6 @@ export default {
         listEmpty,
     },
 }
-
 </script>
 <style lang="scss" scoped>
 @import '~css/public.scss';
@@ -368,5 +367,4 @@ export default {
         }
     }
 }
-
 </style>
