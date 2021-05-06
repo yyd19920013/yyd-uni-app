@@ -14,12 +14,14 @@ export default {
                 this.query = option;
             },
             onShow() {
-                let needResetList = ['/pages/test/test'];
-                let { path } = this.$Router.$Route;
+                try{
+                    let needResetList = ['/pages/test/test'];
+                    let { path } = this.$Router.$Route;
 
-                if (needResetList.includes(path)) {
-                    resetVueData(this);
-                }
+                    if (needResetList.includes(path)) {
+                        resetVueData(this);
+                    }
+                }catch(e){}
             },
         });
     },
