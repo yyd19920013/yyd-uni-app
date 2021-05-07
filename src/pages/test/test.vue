@@ -1,27 +1,35 @@
 <template>
-	<view class="test">
-		这是测试页
-	</view>
+    <view class="test">
+        <view>这是测试页</view>
+        <u-button @click="toHome">回到首页</u-button>
+    </view>
 </template>
 <script>
 export default {
-	data() {
-		return {
-			title: 'Hello'
-		}
-	},
+    data() {
+        return {
+            title: 'Hello'
+        }
+    },
 
-	onShow() {
-		console.log(this.$Route.query);
-	},
+    onShow() {
+        console.log(this.$Route.query);
+    },
 
-	methods: {
-
-	},
+    methods: {
+        toHome(){
+            this.$Router.push({
+                path: '/pages/home/home',
+                query: {
+                    b: 2,
+                },
+            });
+        },
+    },
 }
 </script>
 <style lang="scss" scoped>
 .test {
-	@include styleInit;
+    @include styleInit;
 }
 </style>
