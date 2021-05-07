@@ -10,13 +10,7 @@ export default {
         };
     },
 
-    /*
-        例子：
-    */
-
-    props: {},
-
-    onLoad() {
+    mounted() {
 
     },
 
