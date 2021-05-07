@@ -1,17 +1,17 @@
 import { dateFormat0, dateFormat1, secondFormat0, getWeekName, getAge, toFixed0 } from 'js/utils';
 
 const date = (value, format) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
     return dateFormat0(value, format);
 };
 
 const date1 = (value) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
     return dateFormat1(value);
 };
 
 const date2 = (value) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
     let reg = /\-+/g;
 
     value = value.replace(reg, '/');
@@ -21,7 +21,7 @@ const date2 = (value) => {
 };
 
 const date3 = (value) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
     let reg = /\-+/g;
 
     value = value.replace(reg, '/');
@@ -31,25 +31,25 @@ const date3 = (value) => {
 };
 
 const week = (value) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
 
     return getWeekName(value);
 };
 
 const fSecond = (value, fmt, adjustFmt) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
 
     return secondFormat0(value, fmt, adjustFmt);
 };
 
 const age = (value) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
 
     return getAge(value);
 };
 
 const toFixed = (value, length = 2, closeRound = true) => {
-    if (!value && value != 0) return;
+    if (!value && value !== 0) return;
     return toFixed0(value, length, closeRound);
 };
 
