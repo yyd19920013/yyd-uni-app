@@ -3,7 +3,7 @@ import App from './App';
 import Router, { RouterMount } from 'uni-simple-router';
 import routes from './router';
 import store from './store';
-import * as filter from './filter';
+import * as filters from './filters';
 import services from 'services';
 import uView from './uview-ui';
 import commonMixinPlugin from 'plugins/commonMixinPlugin';
@@ -28,8 +28,8 @@ $Router.beforeEach((to, from, next) => {
 $Router.afterEach((to, from) => {});
 
 //挂载过滤器
-for (let attr in filter) {
-    Vue.filter(attr, filter[attr]);
+for (let attr in filters) {
+    Vue.filter(attr, filters[attr]);
 }
 
 //挂载网络请求
