@@ -39,10 +39,10 @@ const showToast = (config) => {
         uni.showToast(resultConfig);
     });
 };
-const uniToast = (title, duration) => {
+const uniToast = (title, duration = 2000) => {
     showToast({
-        title: title,
-        duration: duration,
+        title,
+        duration,
     });
 };
 //uni小程序-网络请求
@@ -64,7 +64,7 @@ function uniRequest(config) {
     };
 
     function uniRequestFn(resolve, reject) {
-        wx.request({
+        uni.request({
             url: config.url,
             data: config.params || {},
             header: config.header || {},
@@ -90,7 +90,7 @@ function uniRequest(config) {
                         lStore.set('showLoginModel', true);
                         setTimeout(() => {
                             lStore.set('showLoginModel', false);
-                            wx.showModal({
+                            uni.showModal({
                                 title: '提示', //提示的标题,
                                 content: '您的登录会话已失效，请重新登录', //提示的内容,
                                 showCancel: false, //是否显示取消按钮,
@@ -98,7 +98,7 @@ function uniRequest(config) {
                                 confirmColor: '#33adff', //确定按钮的文字颜色,
                                 success: function (res) {
                                     if (res.confirm) {
-                                        wx.navigateTo({
+                                        uni.navigateTo({
                                             url: '/pages/login/login',
                                         });
                                     }
@@ -157,7 +157,7 @@ function uniUpload(config) {
         var header = config.header || {};
 
         header['Content-Type'] = 'multipart/form-data';
-        wx.uploadFile({
+        uni.uploadFile({
             url: config.url,
             filePath: config.filePath || '',
             name: config.name || '',
@@ -181,7 +181,7 @@ function uniUpload(config) {
                     lStore.set('showLoginModel', true);
                     setTimeout(() => {
                         lStore.set('showLoginModel', false);
-                        wx.showModal({
+                        uni.showModal({
                             title: '提示', //提示的标题,
                             content: '您的登录会话已失效，请重新登录', //提示的内容,
                             showCancel: false, //是否显示取消按钮,
@@ -189,7 +189,7 @@ function uniUpload(config) {
                             confirmColor: '#33adff', //确定按钮的文字颜色,
                             success: function (res) {
                                 if (res.confirm) {
-                                    wx.navigateTo({
+                                    uni.navigateTo({
                                         url: '/pages/login/login',
                                     });
                                 }
