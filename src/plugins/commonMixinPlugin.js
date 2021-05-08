@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { $Router } from 'src/main';
-import { resetVueData } from 'js/utils';
+import { resetVueData, showToast, uniToast } from 'js/utils';
 
 export default {
     install() {
@@ -22,6 +22,10 @@ export default {
                         resetVueData(this);
                     }
                 }catch(e){}
+            },
+            methods:{
+                showToast,
+                uniToast,
             },
         });
     },

@@ -1,5 +1,5 @@
 import amapFile from 'js/AMapWX_SDK_V1.2.1/amap-wx';
-import { showToast, uniToast } from 'src/main';
+import { showToast, uniToast } from 'services';
 
 //判断数据类型的方法（对typeof的增强，7种常用类型的判断，返回小写字符串）
 function Type(obj) {
