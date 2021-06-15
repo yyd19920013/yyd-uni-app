@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const path = require("path");
+const path = require('path');
 const resolve = (dir) => {
     return path.join(__dirname, dir);
 };
@@ -34,26 +34,26 @@ module.exports = {
     configureWebpack: {
         resolve: {
             alias: {
-                "@": resolve("src"),
-                "src": resolve('src'),
-                "components": resolve('src/components'),
-                "pages": resolve('src/pages'),
+                '@': resolve('src'),
+                'src': resolve('src'),
+                'components': resolve('src/components'),
+                'pages': resolve('src/pages'),
                 'package': resolve('src/package'),
-                "router": resolve('src/router'),
-                "store": resolve('src/store'),
-                "services": resolve('src/services'),
-                "plugins": resolve('src/plugins'),
-                "static": resolve('src/static'),
-                "js": resolve('src/static/js'),
-                "css": resolve('src/static/css'),
-                "images": resolve('src/static/images'),
-                "audio": resolve('src/static/audio'),
-                "video": resolve('src/static/video'),
+                'router': resolve('src/router'),
+                'store': resolve('src/store'),
+                'services': resolve('src/services'),
+                'plugins': resolve('src/plugins'),
+                'static': resolve('src/static'),
+                'js': resolve('src/static/js'),
+                'css': resolve('src/static/css'),
+                'images': resolve('src/static/images'),
+                'audio': resolve('src/static/audio'),
+                'video': resolve('src/static/video'),
             },
         },
         plugins: [
             new webpack.DefinePlugin({
-                "process.env": {
+                'process.env': {
                     '__ENV': JSON.stringify(process.env.__ENV),
                 }
             })
