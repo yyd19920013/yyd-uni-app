@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require("path");
 const resolve = (dir) => {
     return path.join(__dirname, dir);
@@ -50,5 +51,12 @@ module.exports = {
                 "video": resolve('src/static/video'),
             },
         },
+        plugins: [
+            new webpack.DefinePlugin({
+                "process.env": {
+                    '__ENV': JSON.stringify(process.env.__ENV),
+                }
+            })
+        ],
     },
 };

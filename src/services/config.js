@@ -1,5 +1,5 @@
 module.exports = {
-    ENV: 'develop', //手动切换环境
+    ENV: process.env.__ENV, //根据命令获取环境
     develop: { //开发
         baseUrl: 'http://yangyd.cn',
     },

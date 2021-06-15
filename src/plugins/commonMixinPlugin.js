@@ -24,8 +24,8 @@ export default {
                 }catch(e){}
             },
             methods:{
-                showToast,
-                uniToast,
+                $showToast:showToast,
+                $uniToast:uniToast,
             },
         });
     },

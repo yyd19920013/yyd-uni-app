@@ -11,13 +11,13 @@
         <u-button @click="toTest">去测试页面</u-button>
         <text>{{'2020/9/2'|date('yyyy-MM-dd hh:ss')}}</text>
         <text>{{1.55555555555|toFixed(3)}}</text>
-        <u-button @click="uniToast('这是提示')">弹出提示</u-button>
+        <u-button @click="$uniToast('这是提示')">弹出提示</u-button>
         <u-button @click="count++">增加{{count}}</u-button>
         <u-button @click="getList">请求接口数据</u-button>
     </view>
 </template>
 <script>
-import { lStore, uniToast } from 'js/utils';
+import { lStore } from 'js/utils';
 
 export default {
     data() {
