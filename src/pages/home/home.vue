@@ -14,9 +14,12 @@
         <u-button @click="$uniToast('这是提示')">弹出提示</u-button>
         <u-button @click="count++">增加{{count}}</u-button>
         <u-button @click="getList">请求接口数据</u-button>
+        <view>{{version}}</view>
+        <view>{{VERSION}}</view>
     </view>
 </template>
 <script>
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import { lStore } from 'js/utils';
 
 export default {
@@ -37,13 +40,22 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState('app', ['version']),
+        ...mapGetters('app', ['VERSION']),
+    },
+
     onShow() {
         console.log(this.$Router);
         console.log(getApp());
         lStore.set('var', '测试');
+        this.CHANGE_VERSION('1.0.1');
+        this.changeVersion();
     },
 
     methods: {
+        ...mapMutations('app', ['CHANGE_VERSION']),
+        ...mapActions('app', ['changeVersion']),
         toTest() {
             this.$Router.push({
                 path: '/pages/test/test',

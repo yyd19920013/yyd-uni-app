@@ -64,7 +64,8 @@
     "uni-pages-hot-modules": "^0.0.10",
     "uni-simple-router": "^1.5.5",
     "vue": "^2.6.11",
-    "vuex": "^3.2.0"
+    "vuex": "^3.2.0",
+    "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
     "@dcloudio/types": "*",
