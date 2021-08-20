@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 import getters from './getters';
 import mutations from './mutations';
 import actions from './actions';
+import { lStore } from 'js/utils';
 const context = require.context('./modules', true, /\.js$/);
 let modules = {};
 
@@ -23,9 +24,14 @@ const state = {
     status: '', //服务器错误状态
 };
 
+const { set: setItem, get: getItem, remove: removeItem } = lStore;
 const store = new Vuex.Store({
     plugins: [createPersistedState({
-        storage: window.localStorage,
+        storage: {
+            setItem,
+            getItem,
+            removeItem,
+        },
         reducer(resState) {
             let blackList = ['status', 'isLoading', 'showRefreshBt']; //加入黑名单的state不会被持久化
 
