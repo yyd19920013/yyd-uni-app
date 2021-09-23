@@ -29,14 +29,14 @@ module.exports = (pagesJson, loader) => {
             "backgroundColor": "#fff",
             "list": [{
                     "pagePath": "pages/home/home",
-                    "iconPath": "static/images/tabBar/home-icon.png",
-                    "selectedIconPath": "static/images/tabBar/home-active-icon.png",
+                    "iconPath": "static/tabBar/home-icon.png",
+                    "selectedIconPath": "static/tabBar/home-active-icon.png",
                     "text": "首页"
                 },
                 {
                     "pagePath": "pages/user/user",
-                    "iconPath": "static/images/tabBar/user-icon.png",
-                    "selectedIconPath": "static/images/tabBar/user-active-icon.png",
+                    "iconPath": "static/tabBar/user-icon.png",
+                    "selectedIconPath": "static/tabBar/user-active-icon.png",
                     "text": "我的"
                 },
             ]
