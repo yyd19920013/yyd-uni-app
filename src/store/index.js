@@ -24,6 +24,9 @@ const state = {
     status: '', //服务器错误状态
 };
 
+// 非Module格式：xxxx
+// 使用了Module的格式：ModuleName.xxxx，这里持久化的是Theme Module下面的persistData数据
+const PERSIST_PATHS = ['isLoading'];
 const { set: setItem, get: getItem, remove: removeItem } = lStore;
 const store = new Vuex.Store({
     plugins: [createPersistedState({
@@ -32,16 +35,7 @@ const store = new Vuex.Store({
             getItem,
             removeItem,
         },
-        reducer(resState) {
-            let blackList = ['status', 'isLoading', 'showRefreshBt']; //加入黑名单的state不会被持久化
-
-            for (let attr in resState) {
-                if (blackList.includes(attr)) {
-                    delete resState[attr];
-                }
-            }
-            return resState;
-        },
+        paths: PERSIST_PATHS,
     })],
     modules,
     state,
